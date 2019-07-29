@@ -1,0 +1,30 @@
+.header-select{
+    border: 1px solid #ccc;
+    font-size: 18px;
+    color: #444;
+    padding: 10px 10px 10px 8px;
+    margin-bottom: 16px;
+}
+
+.search-box{
+    padding-right: 16px; 
+    .item-native{
+        padding: 0px !important;
+    }
+
+    :host-context(.ios) {
+        .item-native{
+            padding: 0px;
+            background: #ccc;
+            color: #444;
+        }
+    }
+}
+
+.details{
+    font-size: 14px;
+    margin: 10px 16px 5px 16px;
+    ion-icon{
+        margin-right: 8px;
+    }
+}

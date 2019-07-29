@@ -1,0 +1,61 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Bank Search
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="ion-padding">
+    <ion-select placeholder="Select City" interface="action-sheet" class="header-select" [(ngModel)]="selectedCity" (ionChange)="onCityChange($event)">
+      <ion-select-option *ngFor="let city of cityList" [value]="city.name">{{city.name}}</ion-select-option>
+      <!-- <ion-select-option value="m">Delhi</ion-select-option> -->
+    </ion-select>
+    <ion-item class="search-box" >
+      <ion-input debounce="1" ionChange="searchBank()" type="text" [(ngModel)]="searchText" placeholder="Search by keywords"> </ion-input> 
+    </ion-item>
+
+    <!-- <ng-template *ngIf="bankList.length"> -->
+      <!-- Skeleton screen -->
+<div *ngIf="loadingScreen">
+    <ion-list>
+      <ion-item>
+        <ion-thumbnail slot="start">
+          <ion-skeleton-text animated></ion-skeleton-text>
+        </ion-thumbnail>
+        <ion-label>
+          <h3>
+            <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+          </h3>
+          <p>
+            <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+          </p>
+          <p>
+            <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+          </p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
+    <ion-virtual-scroll [items]="bankList">
+      
+      <ion-card *virtualItem="let item">
+        <ion-card-header color="light">
+          <ion-card-title>{{item.bank_name}}</ion-card-title>
+          <ion-card-subtitle>{{item.branch}}</ion-card-subtitle>
+        </ion-card-header>
+        <div class="details">
+          <ion-icon name="paper" slot="start"></ion-icon>
+          <ion-label>{{item.ifsc}}</ion-label>
+        </div>
+        <div class="details">
+          <ion-icon name="pin" slot="start"></ion-icon>
+          <ion-label [innerHtml]="getAddress(item)"></ion-label>
+        </div>
+      
+      </ion-card>
+    </ion-virtual-scroll>
+    <!-- </ng-template> -->
+  </div>
+</ion-content>

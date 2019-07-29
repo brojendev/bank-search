@@ -1,0 +1,6 @@
+[
+    {"cityId": 1, "name": "Mumbai"},
+    {"cityId": 2, "name": "Delhi"},
+    {"cityId": 2, "name": "Kolkata"},
+    {"cityId": 2, "name": "Pune"}
+]
