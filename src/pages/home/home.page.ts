@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { ToastController } from '@ionic/angular';
 import { MainService } from '../../services/main.service';
 import { City } from '../../model/city.model';
 import { Bank } from '../../model/bank.model';
@@ -16,12 +17,18 @@ export class HomePage {
   public allBankList: Bank[] = [];
   public loadingScreen = false;
   public searchText: string;
+  public isCityListDisabled = false;
+  public isSearchBoxDisabled = true;
   constructor(
-    private mainService: MainService
+    private mainService: MainService,
+    public toastController: ToastController
   ) {
     mainService.getCities()
     .subscribe((res) => {
       this.cityList = res;
+    },
+    (error) => {
+      this.presentToast(error.message);
     });
   }
 
@@ -31,11 +38,20 @@ export class HomePage {
     this.allBankList = [];
     this.bankList = [];
     this.searchText = '';
+    this.isCityListDisabled = true;
     this.mainService.getBanks(this.selectedCity)
     .subscribe((res) => {
       this.bankList = res;
       this.allBankList = res;
       this.loadingScreen = false;
+      this.isCityListDisabled = false;
+      this.isSearchBoxDisabled = false;
+    },
+    (error) => {
+      this.loadingScreen = false;
+      this.isCityListDisabled = false;
+      this.isSearchBoxDisabled = false;
+      this.presentToast(error.message);
     });
   }
 
@@ -78,4 +94,11 @@ export class HomePage {
     return false;
   }
 
+  async presentToast(toastMessage: string, toastDuration: number = 5000) {
+    const toast = await this.toastController.create({
+      message: toastMessage,
+      duration: toastDuration
+    });
+    toast.present();
+  }
 }
