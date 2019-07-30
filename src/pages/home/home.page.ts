@@ -8,7 +8,7 @@ import { Bank } from '../../model/bank.model';
   styleUrls: ['home.page.scss'],
   // providers:  [ MainService ]
 })
-export class HomePage implements OnInit {
+export class HomePage {
 
   public cityList: City[];
   public selectedCity: string;
@@ -28,6 +28,9 @@ export class HomePage implements OnInit {
   public onCityChange() {
     // console.log('City', this.selectedCity);
     this.loadingScreen = true;
+    this.allBankList = [];
+    this.bankList = [];
+    this.searchText = '';
     this.mainService.getBanks(this.selectedCity)
     .subscribe((res) => {
       this.bankList = res;
@@ -41,7 +44,38 @@ export class HomePage implements OnInit {
   }
 
   public searchBank() {
-    this.bankList = this.allBankList.filter((res) => res.ifsc === this.searchText );
+    console.log('Change Value');
+    const patt = new RegExp('/' + this.searchText + '/');
+    if (this.searchText.trim() === '') {
+      this.bankList = this.allBankList;
+    } else {
+      this.bankList = this.allBankList.filter((res) => this.stringMatch(res, this.searchText));
+    }
+  }
+
+  public stringMatch(data, searchText) {
+    if (data.ifsc.toLowerCase().includes(searchText.toLowerCase())) {
+      return true;
+    }
+    if (data.branch.toLowerCase().includes(searchText.toLowerCase())) {
+      return true;
+    }
+    if (data.bank_name.toLowerCase().includes(searchText.toLowerCase())) {
+      return true;
+    }
+    if (data.address.toLowerCase().includes(searchText.toLowerCase())) {
+      return true;
+    }
+    if (data.city.toLowerCase().includes(searchText.toLowerCase())) {
+      return true;
+    }
+    if (data.district.toLowerCase().includes(searchText.toLowerCase())) {
+      return true;
+    }
+    if (data.state.toLowerCase().includes(searchText.toLowerCase())) {
+      return true;
+    }
+    return false;
   }
 
 }
